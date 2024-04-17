@@ -89,7 +89,7 @@ n1 <- n2 <- ((z_alpha_2 + z_beta)^2 * (p1*(1-p1) + p2*(1-p2))) / (p1 - p2 - clin
 # Учитываем drop-out rate
 sample_size_with_dropout <- ceiling(n1 / (1 - dropout_rate))
 
-# Округляем размер выборки вверх
+# Вычисляем n 
 n <- 2 * sample_size_with_dropout
 
 # Выводим результат
