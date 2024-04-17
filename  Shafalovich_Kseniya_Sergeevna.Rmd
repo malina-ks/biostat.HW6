@@ -1,0 +1,128 @@
+---
+title: "Kseniya Shafalovich"
+format: html
+editor: visual
+---
+
+## Задание 1
+
+```{r}
+
+# Если в условиях дана дисперсия и ее не нужно возводить в квадрат, т.к. дисперсия и есть квадрат среднеквадратического отклонения (сигма в квадрате)
+# Заданные параметры
+alpha <- 0.05  # Уровень значимости
+beta <- 0.20   # Мощность (1 - beta)
+sigma_squared <- 0.20  # Дисперсия
+clinical_difference <- 0.25  # Клинически значимая разница
+mean_difference <- -0.10   # Разница средних
+dropout_rate <- 0.10  # Drop-out rate
+
+# Критическое значение Z для уровня значимости alpha/2
+z_alpha_2 <- qnorm(1 - alpha/2)
+
+# Критическое значение Z для достижения мощности 1 - beta
+z_beta <- qnorm(1 - beta)
+
+# Рассчитываем размер выборки для одной группы
+n_per_group <- ((z_alpha_2 + z_beta)^2 * sigma_squared) / (2 * (clinical_difference - abs(mean_difference))^2)
+
+# Учитываем drop-out rate
+sample_size_with_dropout <- n_per_group / (1 - dropout_rate)
+
+# Округляем размер выборки вверх
+n <- ceiling(2 * sample_size_with_dropout)
+
+# Выводим результат
+print(paste("Общий размер выборки (для двух групп) с учетом drop-out rate:", n))
+```
+
+```{r}
+
+# Вариант №2, если дана сигма (среднеквадратическое отклонение) и его нужно возводить в квадрат
+# Заданные параметры
+alpha <- 0.05  # Уровень значимости
+beta <- 0.20   # Мощность (1 - beta)
+sigma_squared <- 0.20  # Дисперсия
+clinical_difference <- 0.25  # Клинически значимая разница
+mean_difference <- -0.10   # Разница средних
+dropout_rate <- 0.10  # Drop-out rate
+
+# Критическое значение Z для уровня значимости alpha/2
+z_alpha_2 <- qnorm(1 - alpha/2)
+
+# Критическое значение Z для достижения мощности 1 - beta
+z_beta <- qnorm(1 - beta)
+
+# Рассчитываем размер выборки для одной группы
+n_per_group <- ((z_alpha_2 + z_beta)^2 * sigma_squared^2) / (2 * (clinical_difference - abs(mean_difference))^2)
+
+# Учитываем drop-out rate
+sample_size_with_dropout <- n_per_group / (1 - dropout_rate)
+
+# Округляем размер выборки вверх
+n <- ceiling(2 * sample_size_with_dropout)
+
+# Выводим результат
+print(paste("Общий размер выборки (для двух групп) с учетом drop-out rate:", n))
+```
+
+# **Задание 2**
+
+```{r}
+# Заданные параметры
+alpha <- 0.05  # Уровень значимости
+beta <- 0.20   # Мощность (1 - beta)
+p1 <- 0.85     # Доля ответов для тестового препарата
+p2 <- 0.65     # Доля ответов для препарата сравнения
+clinical_difference <- -0.1  # Клинически значимая разница
+dropout_rate <- 0.10  # Drop-out rate
+
+# Критическое значение Z для уровня значимости alpha/2
+z_alpha_2 <- qnorm(1 - alpha/2)
+
+# Критическое значение Z для достижения мощности 1 - beta
+z_beta <- qnorm(1 - beta)
+
+# Рассчитываем размер выборки для каждой группы
+n1 <- n2 <- ((z_alpha_2 + z_beta)^2 * (p1*(1-p1) + p2*(1-p2))) / (p1 - p2 - clinical_difference)^2
+
+# Учитываем drop-out rate
+sample_size_with_dropout <- ceiling(n1 / (1 - dropout_rate))
+
+# Округляем размер выборки вверх
+n <- 2 * sample_size_with_dropout
+
+# Выводим результат
+print(paste("Общий размер выборки (для двух групп) с учетом drop-out rate:", n))
+```
+
+## **Задание 3**
+
+```{r}
+# Заданные параметры
+alpha <- 0.05  # Уровень значимости
+beta <- 0.20   # Мощность (1 - beta)
+HR <- 2        # Hazard Ratio
+p1 <- 0.5      # Доля события (заболевания) в первой группе
+p2 <- 0.5      # Доля события (заболевания) во второй группе
+d <- 0.8       # Доля события (заболевания), ожидаемая в обеих группах
+dropout_rate <- 0.10  # Drop-out rate
+
+# Критическое значение Z для уровня значимости alpha/2
+z_alpha_2 <- qnorm(1 - alpha/2)
+
+# Критическое значение Z для достижения мощности 1 - beta
+z_beta <- qnorm(1 - beta)
+
+# Рассчитываем размер выборки для каждой группы
+n1 <- n2 <- ((z_alpha_2 + z_beta)^2) / (log(HR)^2 * p1 * p2 * d)
+
+# Учитываем drop-out rate
+sample_size_with_dropout <- (n1 + n2) / (1 - dropout_rate)
+
+# Округляем результат вверх
+total_sample_size <- ceiling(sample_size_with_dropout)
+
+# Выводим результат
+print(paste("Размер выборки с учетом drop-out rate:", total_sample_size))
+```
